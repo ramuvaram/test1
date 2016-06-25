@@ -1,0 +1,259 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.demoorg</groupId>
+		<artifactId>demo-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>demo-core</artifactId>
+	<packaging>bundle</packaging>
+	<name>${companyName}${applicationId}-core</name>
+	<description>This build file builds the core bundle</description>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<!-- plugins to make an osgi bundle out of the jar -->
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version><!--$NO-MVN-MAN-VER$ -->
+				<extensions>true</extensions>
+
+				<configuration>
+					<instructions>
+						<Embed-Directory>src/main/resources</Embed-Directory>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Export-Package>
+							com.demoorg.*;version=${project.version}
+						</Export-Package>
+						<Import-Package>
+							org.osgi.framework;version="[1.5.0,2.0.0)",
+							org.apache.sling.api;version="[2.1.0,2.2.4]",
+							com.fasterxml.jackson.*;version="[2.0.6,3)",
+							com.demoorg.*;version=[]${project.version}
+							*;resolution:=optional</Import-Package>
+						<DynamicImport-Package>*</DynamicImport-Package>
+
+
+						<Sling-Test-Regexp>.*Testing</Sling-Test-Regexp>
+						<!-- Inserting content into the JCR and installing some files on the 
+							server with your bundle. Sling-Initial-Content The first line will overwrite 
+							the contents of the node at content/osgitest with test.json NOTE: uninstall:=false 
+							says that it will not remove the content when I remove the package. This 
+							could be set to true to also remove the content when the package is removed 
+							the choice is yours. The second line will overwrite the path will install 
+							the files and overwrite them if you re-install. -->
+					</instructions>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.felix</groupId>
+						<artifactId>org.osgi.core</artifactId>
+						<version>1.4.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-scr-plugin</artifactId>
+				<version>1.12.0</version><!--$NO-MVN-MAN-VER$ -->
+				<executions>
+					<execution>
+						<id>generate-scr-descriptor</id>
+						<goals>
+							<goal>scr</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<!-- Install bundles -->
+		<profile>
+			<id>deploy</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.sling</groupId>
+						<artifactId>maven-sling-plugin</artifactId>
+						<version>2.1.0</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>install</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<slingUrl>http://${cq.host}:${cq.port}/system/console/install</slingUrl>
+							<usePut>false</usePut>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	<dependencies>
+		<!-- JMockit -->
+		<dependency>
+			<groupId>com.googlecode.jmockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+		<!-- for config -->
+		<dependency>
+			<groupId>javax.jcr</groupId>
+			<artifactId>jcr</artifactId>
+			<version>2.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- for Servlet -->
+		<dependency>
+			<groupId>org.apache.jackrabbit</groupId>
+			<artifactId>jackrabbit-jcr-server</artifactId>
+			<version>2.2.8</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.jackrabbit</groupId>
+			<artifactId>jackrabbit-webdav</artifactId>
+			<version>2.2.8</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.scr.annotations</artifactId>
+			<version>1.9.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.sling</groupId>
+			<artifactId>org.apache.sling.api</artifactId>
+			<scope>provided</scope>
+			<version>2.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.sling</groupId>
+			<artifactId>org.apache.sling.jcr.api</artifactId>
+			<scope>provided</scope>
+			<version>2.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.sling</groupId>
+			<artifactId>org.apache.sling.scripting.api</artifactId>
+			<scope>provided</scope>
+			<version>2.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.sling</groupId>
+			<artifactId>org.apache.sling.commons.json</artifactId>
+			<scope>provided</scope>
+			<version>2.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<scope>provided</scope>
+			<version>4.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.compendium</artifactId>
+			<scope>provided</scope>
+			<version>4.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>provided</scope>
+			<version>1.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.sling</groupId>
+			<artifactId>org.apache.sling.servlets.post</artifactId>
+			<scope>provided</scope>
+			<version>2.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.sling</groupId>
+			<artifactId>org.apache.sling.servlets.resolver</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.http.api</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.sling</groupId>
+			<artifactId>org.apache.sling.scripting.jsp</artifactId>
+			<version>2.0.14</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.day.cq.wcm</groupId>
+			<artifactId>cq-wcm-commons</artifactId>
+			<version>${aem.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.day.cq.wcm</groupId>
+			<artifactId>cq-wcm-api</artifactId>
+			<version>${aem.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.day.cq</groupId>
+			<artifactId>cq-tagging</artifactId>
+			<version>${aem.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.day.cq.wcm</groupId>
+			<artifactId>cq-wcm-foundation</artifactId>
+			<version>${aem.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.day.cq</groupId>
+			<artifactId>cq-commons</artifactId>
+			<version>${aem.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.day.cq.workflow</groupId>
+			<artifactId>cq-workflow-api</artifactId>
+			<version>${aem.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.day.cq.workflow</groupId>
+			<artifactId>cq-workflow-impl</artifactId>
+			<version>${aem.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>

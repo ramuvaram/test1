@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>demoorgdemo-web</comment>
+<entry key="createdBy">ramu</entry>
+<entry key="name">demo-web</entry>
+<entry key="created">2016-03-09T06:06:11.147+0530</entry>
+<entry key="groupId">com.demoorg</entry>
+<entry key="version">0.0.1-SNAPSHOT</entry>
+<entry key="requiresRoot">false</entry>
+<entry key="group">ped</entry>
+<entry key="description">This build file builds the CQ web package</entry>
+<entry key="artifactId">demo-web</entry>
+<entry key="path">/etc/packages/ped/demo-web.zip</entry>
+</properties>

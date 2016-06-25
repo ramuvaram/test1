@@ -1,0 +1,73 @@
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>A tab library for action tag support</description>
+    <tlib-version>1.0</tlib-version>
+    <short-name>template</short-name>
+    <uri>http://com.demoorg.demo/taglibs/action/1.0</uri>
+
+    <!-- =================================================================== -->
+    <tag>
+        
+        <name>action</name>
+        <tag-class>com.demoorg.demo.taglib.ActionTag</tag-class>
+         <body-content>JSP</body-content>
+         <attribute>
+            <description>
+                this will give the model name.
+            </description>
+            <name>bean</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>
+                this will give the give the action tag. 
+            </description>
+            <name>className </name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        </tag>
+        <tag>
+        
+        <name>params</name>
+        <tag-class>com.demoorg.demo.taglib.AttributeTag</tag-class>
+        <body-content>JSP</body-content>
+          <attribute>
+            <description>
+                this will give the the params Tag.
+            </description>
+            <name>name</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <description>
+                this will give the user name 
+            </description>
+            <name>value </name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        </tag>
+   <tag>
+        <description>
+            Performs a server-side redirect.
+        </description>
+        <name>redirect</name>
+        <tag-class>com.demoorg.demo.wcm.tags.functions.Redirect</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>
+                Indicates whether to send an error code if recursion is detected.
+            </description>
+            <name>sendError</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
+        </taglib>
